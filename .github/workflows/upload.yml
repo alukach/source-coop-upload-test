@@ -16,13 +16,14 @@ env:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    # In the job, with permissions: { id-token: write }
     env:
       AWS_ENDPOINT_URL_S3: https://data.staging.source.coop
     steps:
-      - name: Sign in to Source Cooperative as alukach--service-account-demo
+      - name: Sign in to Source Cooperative as alukach--service-account-video-demo
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: arn:aws:iam::alukach--service-account-demo:role/FullAccess
+          role-to-assume: arn:aws:iam::alukach--service-account-video-demo:role/FullAccess
           audience: https://data.staging.source.coop
           sts-endpoint: https://data.staging.source.coop/.sts
           aws-region: us-west-2

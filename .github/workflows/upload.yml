@@ -1,0 +1,32 @@
+name: Upload to Source Cooperative
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_ENDPOINT_URL_S3: https://data.staging.source.coop
+  DESTINATION: s3://alukach/upload-tests
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sign in to Source Cooperative as alukach--service-account-test
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::alukach--service-account-test:role/FullAccess
+          audience: https://data.staging.source.coop
+          sts-endpoint: https://data.staging.source.coop/.sts
+          aws-region: us-west-2
+
+      - name: Write a partitioned file
+        run: |
+          now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "Written by ${GITHUB_REPOSITORY} run ${GITHUB_RUN_ID} (${GITHUB_EVENT_NAME}) at ${now}" > file.txt
+          aws s3 cp file.txt "${DESTINATION}/$(date -u -d "$now" +%Y/%m/%d)/${now}.txt"

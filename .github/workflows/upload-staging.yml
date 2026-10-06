@@ -1,4 +1,4 @@
-name: Upload to Source Cooperative
+name: Upload to Source Cooperative (Staging)
 
 on:
   schedule:

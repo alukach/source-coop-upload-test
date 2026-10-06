@@ -17,8 +17,6 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     # In the job, with permissions: { id-token: write }
-    env:
-      AWS_ENDPOINT_URL_S3: https://data.staging.source.coop
     steps:
       - name: Sign in to Source Cooperative as alukach--source-experiments
         uses: aws-actions/configure-aws-credentials@v6
